@@ -1,0 +1,80 @@
+# Bella AI Digital Companion - System Requirements
+# =================================================
+
+# Node.js and Package Management
+# -------------------------------
+node>=14.0.0
+npm>=6.0.0
+
+# System Requirements
+# -------------------
+# Operating System: Windows 10+, macOS 10.15+, or Ubuntu 18.04+
+# RAM: 4GB minimum, 8GB recommended
+# Storage: 3GB free space (2GB for AI models + 1GB for project)
+# Network: Stable internet connection for initial model download
+
+# Browser Requirements
+# --------------------
+# Primary: Chrome 90+ (recommended for best performance)
+# Secondary: Firefox 85+, Safari 14+, Edge 90+
+# Features Required:
+#   - Web Speech API support
+#   - SharedArrayBuffer support
+#   - MediaDevices API (microphone access)
+#   - ES6 modules support
+#   - WebAssembly support
+
+# Core Dependencies (from package.json)
+# ------------------------------------
+@xenova/transformers==2.17.2
+
+# Development Dependencies
+# ------------------------
+http-server==14.1.1
+serve==14.2.4
+
+# AI Models (downloaded via npm run download)
+# ------------------------------------------
+# Xenova/whisper-asr - Speech recognition model (~200MB)
+# Xenova/LaMini-Flan-T5-77M - Language model (~300MB) 
+# Xenova/speecht5_tts - Text-to-speech model (~400MB)
+# Speaker embeddings for TTS (~50MB)
+
+# Audio Hardware Requirements
+# ---------------------------
+# Microphone: Built-in or external microphone
+# Audio Output: Speakers or headphones
+# Audio Quality: Clear speech input recommended
+
+# Network Requirements
+# --------------------
+# Initial Setup: Broadband internet for model download
+# Runtime: No internet required (fully offline capable)
+# CORS Support: Required for local development server
+
+# Development Tools (Optional)
+# ----------------------------
+# Git for version control
+# Code editor with JavaScript support
+# Browser developer tools
+
+# Production Requirements
+# ----------------------
+# HTTPS: Required for production deployment
+# CORS Headers: Cross-Origin-Opener-Policy, Cross-Origin-Embedder-Policy
+# Content Security Policy: For secure deployment
+# Static file server: nginx, Apache, or similar
+
+# Performance Recommendations
+# ---------------------------
+# SSD storage for faster model loading
+# Multiple CPU cores for model inference
+# Hardware acceleration (GPU) for optimal performance
+# 16GB+ RAM for concurrent model usage
+
+# Security Requirements
+# ---------------------
+# Microphone permissions in browser
+# Secure context (HTTPS in production)
+# Updated browser for latest security features
+# No external network access required for operation 

@@ -4,7 +4,8 @@
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import fs from 'fs/promises';
+import { promises as fs, createWriteStream } from 'fs';
+import https from 'https';
 
 // Get the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -54,15 +55,37 @@ async function download() {
     console.log('\nDownloading speaker embeddings...');
     try {
         const url = 'https://hf-mirror.com/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin';
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const buffer = await response.arrayBuffer();
         const ttsModelDir = path.join(modelsPath, 'Xenova/speecht5_tts');
         await fs.mkdir(ttsModelDir, { recursive: true }); // Ensure directory exists
-        await fs.writeFile(path.join(ttsModelDir, 'speaker_embeddings.bin'), Buffer.from(buffer));
-        console.log('Successfully downloaded speaker_embeddings.bin');
+        
+        await new Promise((resolve, reject) => {
+            const file = createWriteStream(path.join(ttsModelDir, 'speaker_embeddings.bin'));
+            
+            const downloadFile = (url) => {
+                https.get(url, (response) => {
+                    // Handle redirects
+                    if (response.statusCode === 301 || response.statusCode === 302) {
+                        downloadFile(response.headers.location);
+                        return;
+                    }
+                    
+                    if (response.statusCode !== 200) {
+                        reject(new Error(`HTTP error! status: ${response.statusCode}`));
+                        return;
+                    }
+                    
+                    response.pipe(file);
+                    file.on('finish', () => {
+                        file.close();
+                        console.log('Successfully downloaded speaker_embeddings.bin');
+                        resolve();
+                    });
+                    file.on('error', reject);
+                }).on('error', reject);
+            };
+            
+            downloadFile(url);
+        });
     } catch (error) {
         console.error('\nFailed to download speaker_embeddings.bin:', error);
     }

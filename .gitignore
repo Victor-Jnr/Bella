@@ -5,9 +5,18 @@
 .idea/
 .vscode/
 
+# AI Models (large files - download separately)
+/models/
+*.bin
+*.onnx
+*.safetensors
+
 # OS-generated files
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+
+# Development logs
+*.log
