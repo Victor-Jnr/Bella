@@ -21,13 +21,22 @@
 git clone https://github.com/GRISHM7890/Bella.git
 cd Bella
 
+# Build the Docker image:
+docker build -t bella_dev .
+
+# Run the container (adjust volume path for your system):
+docker run -it --gpus all -v $(pwd):/workspace -p 8081:8081 --init --net=host --uts=host --ipc=host --name Bella_dev --security-opt seccomp=unconfined --ulimit stack=67108864 --ulimit memlock=-1 --privileged bella_dev:latest
+
+# Install Node.js 22+ (required for Bella):
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install -y nodejs
+
 # Install dependencies
 npm install
 
 # Download AI models
 npm run download
 
-# Start the service
+# Start the service(kill if needed: pkill -f http-server)
 npm start
 ```
 
@@ -39,6 +48,18 @@ Visit `http://localhost:8081` to start communicating with Bella!
 - Modern browser with WebGPU support (Chrome 113+, Edge 113+, Firefox 128+)
 - Microphone permissions (for voice interaction)
 - **GPU acceleration enabled** for faster AI model inference
+
+### GPU Setup Notes
+- The Docker container automatically detects and uses NVIDIA GPUs when available
+- AI models run in the browser using WebGPU for GPU acceleration
+- Check browser console for GPU acceleration status messages
+
+### Verifying GPU Usage
+1. Open browser developer tools (F12)
+2. Go to Console tab
+3. Look for: `🔥 GPU Acceleration Configured:` messages
+4. During AI processing, check browser Task Manager for GPU utilization
+5. Models should load and run significantly faster with GPU acceleration
 
 ---
 
@@ -61,7 +82,7 @@ Bella is not just an application; she is the seed of a digital companion. In thi
 - **📱 Responsive Design**: Elegant interface adapting to different screen sizes
 - **🔧 Model Management**: Automatic download and management of AI models
 - **💝 Basic Interaction**: Affinity system and emotional feedback
-- **🧠 Hanoko-san AI Integration**: Custom Dolphin 2.2.1 Mistral 7B model with personality, memory, and affection systems
+- **🧠 Enhanced LLM Dialogue**: Optimized prompt engineering and parameter configuration for more natural, Siri-like conversations
 
 ### 🔧 Technology Ready for Activation
 - **🧠 Thinking Engine**: LLM integration framework ready, supporting multiple models
@@ -107,7 +128,7 @@ mindmap
 ### Technology Stack
 - **Frontend**: Native JavaScript + CSS3 + HTML5
 - **Backend**: Node.js + Express
-- **AI Models**: Whisper (ASR) + Dolphin 2.2.1 Mistral 7B (LLM) + TTS
+- **AI Models**: Whisper (ASR) + Local LLM + TTS
 - **Architecture Patterns**: Event-driven + Singleton Pattern + Modular Design
 
 ---
@@ -149,24 +170,7 @@ Bella now uses more advanced LLM prompt engineering techniques to make conversat
 - Optimized keyword extraction and personalized response generation
 - Provided specialized prompt templates for different chat modes (casual, assistant, creative)
 
-## 🤖 Hanoko-san AI Personality
-
-Bella now features **Hanoko-san**, a custom AI personality powered by the Dolphin 2.2.1 Mistral 7B model:
-
-### **Character Traits:**
-- **Cute & Teasing**: Warm, playful anime friend with lighthearted personality
-- **Emotionally Intelligent**: Includes emotion tags and affection scoring
-- **Memory System**: Remembers conversation context across sessions
-- **Concise Communication**: 2-5 short sentences per response
-- **Expressive**: Uses emojis and maintains character consistency
-
-### **Advanced Features:**
-- **Context Awareness**: References previous conversations
-- **Affection System**: Builds relationship bonds over time
-- **Emotional Feedback**: Provides appropriate emotional responses
-- **Personality Consistency**: Never breaks character, stays in role
-
-**Experience the warmth of a digital companion who remembers you!** 💕✨
+These improvements enable Bella to better understand user intent and respond in a more natural, personalized way, creating a more enjoyable conversation experience.
 
 ## 🛠️ Development Guide
 
